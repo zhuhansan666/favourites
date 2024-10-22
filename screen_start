@@ -15,5 +15,12 @@ while true; do
     fi
 done
 
-screen -x -S "${screen_name}" -p 0 -X stuff "cd \"${workpath}\" && $cmd |& tee -a \"${logfile}\""
+if [ -n "${logfile}" ]; then
+    log_command=" |& tee -a \"${logfile}\""
+else 
+    log_command=""
+fi
+
+
+screen -x -S "${screen_name}" -p 0 -X stuff "cd \"${workpath}\" && ${cmd}${log_command}"
 screen -x -S "${screen_name}" -p 0 -X stuff $'\n'
