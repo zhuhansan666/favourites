@@ -1,21 +1,19 @@
 #!/bin/bash
 
-# 已知问题: 同时运行多个如下脚本可能会导致未知的指令无法成功执行, 启动时切勿携带 `&` 符号后台运行
-
-workpath="/for/"
+workpath="/foo/"
 screen_name="bar"
 cmd="command"
+logfile="bar.log"
 
-echo -e "screen start: $screen_name, $cmd\n"
+echo -e "screen start: ${screen_name}\n"
 
-screen -dmS "$screen_name"
+screen -dmS "${screen_name}"
 
 while true; do
-    if screen -ls | grep -q "$screen_name"; then
+    if screen -ls | grep -q "${screen_name}"; then
         break;
     fi
 done
-# sleep 1s  # sleep to wait screen start
 
-screen -x -S "$screen_name" -p 0 -X stuff "cd \"$workpath\" && $cmd"
-screen -x -S "$screen_name" -p 0 -X stuff $'\n'
+screen -x -S "${screen_name}" -p 0 -X stuff "cd \"${workpath}\" && $cmd |& tee -a \"${logfile}\""
+screen -x -S "${screen_name}" -p 0 -X stuff $'\n'
