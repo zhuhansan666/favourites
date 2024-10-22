@@ -16,7 +16,7 @@ while true; do
 done
 
 if [ -n "${logfile}" ]; then
-    log_command=" |& tee -a \"${logfile}\""
+    log_command=" 2>&1 | tee -a \"${logfile}\""
 else 
     log_command=""
 fi
