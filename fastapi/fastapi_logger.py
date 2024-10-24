@@ -3,7 +3,6 @@
 """
 
 import logging
-from loguru import logger
 
 __all__ = (
     'LoguruHandler',
@@ -60,7 +59,7 @@ def replace_uvicorn_logger(target_logger):
     loguru_handler: logging.Handler = LoguruHandler(target_logger)
     for logging_logger in loggers:
         if getattr(logging_logger, '__loguru_handled', False):
-            logger.debug(f'Uvicorn_logger ({logging_logger.name}) was handled, skip to handle')
+            target_logger.debug(f'Uvicorn_logger ({logging_logger.name}) was handled, skip to handle')
             continue
 
         for handler in logging_logger.handlers:  # 关闭旧的 handler 以不输出到控制台
